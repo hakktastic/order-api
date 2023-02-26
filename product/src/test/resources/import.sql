@@ -1,0 +1,10 @@
+insert into product (product_id, name, price) values (1,'shirt', 34.25);
+insert into product (product_id, name, price) values (2,'jacket', 19.99);
+insert into product (product_id, name, price) values (3,'jeans', 25);
+insert into product (product_id, name, price) values (4,'trouser', 50);
+insert into product (product_id, name, price) values (5,'cap', 9.99);
+insert into product (product_id, name, price) values (6,'boots', 149.99);
+insert into product (product_id, name, price) values (7,'polo', 34.99);
+insert into product (product_id, name, price) values (8,'sweater', 74.99);
+insert into product (product_id, name, price) values (9,'hoodie', 85);
+insert into product (product_id, name, price) values (10,'shorts', 14.99);
