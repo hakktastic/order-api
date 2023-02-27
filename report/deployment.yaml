@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - image: hakktastic/demo-report-service:0.0.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: report-service
           ports:
             - containerPort: 8083

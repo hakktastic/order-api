@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - image: hakktastic/demo-order-service:0.0.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: order-service
           ports:
             - containerPort: 8082
@@ -65,7 +65,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: cart-service
+    app: order-service
   ports:
     - name: "8082"
       port: 8082

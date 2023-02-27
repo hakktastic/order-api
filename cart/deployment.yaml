@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - image: hakktastic/demo-cart-service:0.0.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: cart-service
           ports:
             - containerPort: 8081
