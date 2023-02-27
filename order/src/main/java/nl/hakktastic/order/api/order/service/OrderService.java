@@ -5,6 +5,7 @@ import nl.hakktastic.order.api.order.entity.OrderEntity;
 import nl.hakktastic.order.api.order.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,6 +41,17 @@ public class OrderService {
     }
 
     /**
+     * Get All orders.
+     *
+     * @return Return a {@link List} with {@link OrderEntity} objects, otherwise return empty {@link Optional}
+     */
+    public Optional<List<OrderEntity>> readAllOrders() {
+
+        log.debug("readAllOrders - read all orders");
+        return Optional.of(repository.findAll());
+    }
+
+    /**
      * Create order.
      *
      * @param orderEntity order to be created
@@ -50,4 +62,6 @@ public class OrderService {
         log.debug("createOrder - order={}", orderEntity);
         return Optional.of(repository.save(orderEntity));
     }
+
+
 }

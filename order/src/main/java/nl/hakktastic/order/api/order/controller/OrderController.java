@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * Controller for orders.
@@ -44,6 +46,19 @@ public class OrderController {
 
         return new ResponseEntity<>(service.readOrder(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("no order found for id="+orderId)),
+                HttpStatus.OK);
+    }
+
+    /**
+     * Get all orders.
+     *
+     * @return Returns a {@link List} with {@link OrderEntity} objects
+     */
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderEntity>> readAllOrders(){
+
+        return new ResponseEntity<>(service.readAllOrders()
+                .orElseThrow(() -> new OrderNotFoundException("no order(s) found")),
                 HttpStatus.OK);
     }
 
