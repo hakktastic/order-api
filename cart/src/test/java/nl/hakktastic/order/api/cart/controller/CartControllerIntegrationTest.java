@@ -46,4 +46,14 @@ class CartControllerIntegrationTest {
                 .andExpect(jsonPath("$.cartItemList[2].productId").value(validCartItem3.getProductId()))
                 .andExpect(jsonPath("$.cartItemList[2].quantity").value(validCartItem3.getQuantity()));
     }
+
+    @Test
+    void givenNoProductID_whenCreateCart_thenReturnBadRequest(){
+        // TODO implementation
+    }
+
+    @Test
+    void givenNoQuantity_whenCreateCart_thenReturnBadRequest(){
+        // TODO implementation
+    }
 }
