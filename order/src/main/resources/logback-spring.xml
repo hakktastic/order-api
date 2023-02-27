@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="default">
+        <logger name="nl.hakktastic.order.api" level="INFO"/>
+    </springProfile>
+
+    <springProfile name="local">
+
+        <logger name="nl.hakktastic.order.api" level="DEBUG"/>
+
+        <!-- Log information about Application at DEBUG -->
+        <logger name="org.springframework.boot.SpringApplication" level="DEBUG"/>
+        <!-- Log the database Connection Pool configuration. Passwords are masked. -->
+        <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG"/>
+        <!-- Log Hibernate JPA config including managed classes names -->
+        <logger name="org.hibernate.jpa.internal.util.LogHelper" level="DEBUG"/>
+        <!-- Log Hibernate JDBC Environment -->
+        <logger name="org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator" level="DEBUG"/>
+        <!-- Log Hibernate runtime configuration -->
+        <logger name="org.hibernate.cfg.Settings" level="DEBUG"/>
+    </springProfile>
+
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+    </root>
+
+</configuration>
