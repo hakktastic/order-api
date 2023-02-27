@@ -15,4 +15,12 @@
     <name>Report Service</name>
     <description>Demo Rest Report Service for Spring Boot</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+    </dependencies>
+
 </project>
