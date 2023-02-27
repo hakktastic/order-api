@@ -3,6 +3,7 @@ package nl.hakktastic.order.api.order.testdata;
 import nl.hakktastic.order.api.order.entity.OrderEntity;
 import nl.hakktastic.order.api.order.entity.OrderItemEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public final class TestDataGenerator {
                 .builder()
                 .customerName("mockCustomer")
                 .mobileNr("1234567890")
+                .orderDateTime(LocalDateTime.now())
                 .orderItemList(List.of(orderItem1,orderItem2,orderItem3))
                 .build();
     }
@@ -45,6 +47,7 @@ public final class TestDataGenerator {
                 .builder()
                 .customerName("")
                 .mobileNr("1234567890")
+                .orderDateTime(LocalDateTime.now())
                 .orderItemList(List.of(orderItem1,orderItem2,orderItem3))
                 .build();
     }
@@ -64,6 +67,7 @@ public final class TestDataGenerator {
                 .builder()
                 .customerName("mockCustomer")
                 .mobileNr("")
+                .orderDateTime(LocalDateTime.now())
                 .orderItemList(List.of(orderItem1,orderItem2,orderItem3))
                 .build();
     }

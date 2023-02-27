@@ -3,10 +3,12 @@ package nl.hakktastic.order.api.order.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -32,6 +34,9 @@ public class OrderEntity {
 
     @Pattern(regexp = "^\\d{10}$", message = "Mobile number should contain ten digits")
     private String mobileNr;
+
+    @PastOrPresent(message = "Order date time should be today or in the past")
+    private LocalDateTime orderDateTime;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
