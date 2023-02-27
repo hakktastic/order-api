@@ -2,6 +2,7 @@ package nl.hakktastic.order.api.product.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import nl.hakktastic.order.api.product.entity.ProductEntity;
 import nl.hakktastic.order.api.product.exception.ProductNotFoundException;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -55,7 +55,7 @@ public class ProductController {
     @Operation(summary = "read product with provided ID")
     @ApiResponse(responseCode = "200", description = "product found in repository")
     @GetMapping(value = "/products/{id}")
-    public ResponseEntity<ProductEntity> readProduct(@PathVariable @Valid int id) {
+    public ResponseEntity<ProductEntity> readProduct(@Valid @PathVariable int id) {
 
         log.debug("Product Controller - read product: productId={}", id);
 

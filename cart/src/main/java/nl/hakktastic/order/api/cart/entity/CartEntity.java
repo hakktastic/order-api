@@ -2,7 +2,6 @@ package nl.hakktastic.order.api.cart.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Validated
 @Entity
 @Table(name = "cart")
 public class CartEntity {

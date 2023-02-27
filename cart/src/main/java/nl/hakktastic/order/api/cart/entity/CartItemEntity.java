@@ -1,11 +1,9 @@
 package nl.hakktastic.order.api.cart.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +11,6 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @ToString
-@Validated
 @Entity
 @Table(name="item")
 public class CartItemEntity {

@@ -1,5 +1,6 @@
 package nl.hakktastic.order.api.cart.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import nl.hakktastic.order.api.cart.entity.CartEntity;
 import nl.hakktastic.order.api.cart.exception.CartNotFoundException;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @Slf4j
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,7 +31,7 @@ public class CartController {
 
 
     @PostMapping("/carts")
-    public ResponseEntity<CartEntity> createCart(@RequestBody CartEntity cartEntity){
+    public ResponseEntity<CartEntity> createCart(@Valid @RequestBody CartEntity cartEntity){
 
         return new ResponseEntity<>(service.createCart(cartEntity)
                 .orElseThrow(() -> new UnexpectedCartException("unexpected error occurred while creating cart")),
@@ -39,7 +39,7 @@ public class CartController {
     }
 
     @PutMapping("/carts/{cartId}/product/{productId}/quantity/{quantity}")
-    public ResponseEntity<CartEntity> createCartItem(@PathVariable @Valid int cartId, @PathVariable @Valid int productId, @PathVariable @Valid int quantity){
+    public ResponseEntity<CartEntity> createCartItem(@Valid @PathVariable int cartId,  @Valid @PathVariable int productId, @Valid @PathVariable int quantity){
 
         return new ResponseEntity<>(service.createCartItem(cartId, productId, quantity)
                 .orElseThrow(() -> new UnexpectedCartException("cart with id "+ cartId +"could not be updated")),
@@ -47,7 +47,7 @@ public class CartController {
     }
 
     @GetMapping("/carts/{cartId}")
-    public ResponseEntity<CartEntity> readCart(@PathVariable @Valid int cartId){
+    public ResponseEntity<CartEntity> readCart(@Valid @PathVariable int cartId){
 
         return new ResponseEntity<>(service.readCart(cartId)
                 .orElseThrow(() -> new CartNotFoundException("No cart found for id="+cartId)),

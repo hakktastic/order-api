@@ -1,15 +1,14 @@
 package nl.hakktastic.order.api.product.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -19,7 +18,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @Data
-@Validated
 @Table(name = "product")
 @Entity
 public class ProductEntity {
