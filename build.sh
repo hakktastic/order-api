@@ -28,7 +28,7 @@ docker push hakktastic/demo-product-service:0.0.1
 cd ..
 
 echo "----------------------- Building Report Service ------------------------"
-cd product
+cd report
 mvn clean package -DskipTests
 docker build -t hakktastic/demo-report-service:0.0.1 .
 docker push hakktastic/demo-report-service:0.0.1
