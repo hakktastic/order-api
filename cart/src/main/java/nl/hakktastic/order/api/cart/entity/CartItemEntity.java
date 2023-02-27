@@ -19,6 +19,8 @@ public class CartItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Positive(message = "Product ID should be positive")
+    @Min(value = 1, message = "Product ID should be min. 1")
     private int productId;
 
     @Positive(message = "Quantity should be positive")
