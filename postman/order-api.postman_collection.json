@@ -13,7 +13,18 @@
 					"name": "product-service",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-product-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-product-service}}",
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						}
 					},
 					"response": []
 				},
@@ -40,7 +51,18 @@
 					"name": "order-service",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-order-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-order-service}}",
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						}
 					},
 					"response": []
 				},
@@ -50,10 +72,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/swagger-ui/index.html",
+							"raw": "{{host-url}}:{{host-port-report-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-report-service}}",
 							"path": [
-								"swagger-ui",
-								"index.html"
+								"v3",
+								"api-docs"
 							]
 						}
 					},
