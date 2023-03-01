@@ -1,5 +1,7 @@
 package nl.hakktastic.order.api.report.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import nl.hakktastic.order.api.report.dto.ProductDTO;
@@ -39,6 +41,8 @@ public class ReportController {
      *
      * @return daily sales amount
      */
+    @Operation(summary = "Get daily sales amount")
+    @ApiResponse(responseCode = "200", description = "Daily sales amount returned successfully")
     @GetMapping("/reports/daily/sales/start/{startDate}/end/{endDate}")
     public ResponseEntity<BigDecimal> getDailySalesAmount(@Valid @PathVariable LocalDate startDate, @Valid @PathVariable LocalDate endDate){
 
@@ -54,6 +58,8 @@ public class ReportController {
      *
      * @return Returns a List with top-5 {@link ProductDTO} of the day
      */
+    @Operation(summary = "Get top five selling Product of the day")
+    @ApiResponse(responseCode = "200", description = "Top five selling products of the day returned successfully")
     @GetMapping("/reports/daily/sales/top-5-products")
     public ResponseEntity<List<ProductDTO>> getTopFiveSellingProductsOfTheDay(){
 
@@ -69,6 +75,8 @@ public class ReportController {
      *
      * @return a @{@link ProductDTO} of the least selling product of the month
      */
+    @Operation(summary = "Get least selling Product of the month")
+    @ApiResponse(responseCode = "200", description = "Least selling Product of the month returned successfully")
     @GetMapping("/reports/monthly/sales/least-selling-product/{month}")
     public ResponseEntity<ProductDTO> getLeastSellingProductOfTheMonth(@Valid @PathVariable int month){
 

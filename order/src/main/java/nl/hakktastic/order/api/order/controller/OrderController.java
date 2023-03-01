@@ -1,5 +1,7 @@
 package nl.hakktastic.order.api.order.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import nl.hakktastic.order.api.order.entity.OrderEntity;
@@ -41,6 +43,8 @@ public class OrderController {
      * @param orderId ID of the order.
      * @return Returns @{@link OrderEntity}
      */
+    @Operation(summary = "Get Order by ID")
+    @ApiResponse(responseCode = "200", description = "Order returned successfully")
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<OrderEntity> readOrder(@Valid @PathVariable int orderId){
 
@@ -54,6 +58,8 @@ public class OrderController {
      *
      * @return Returns a {@link List} with {@link OrderEntity} objects
      */
+    @Operation(summary = "Get all Orders")
+    @ApiResponse(responseCode = "200", description = "Order(s) returned successfully")
     @GetMapping("/orders")
     public ResponseEntity<List<OrderEntity>> readAllOrders(){
 
@@ -68,6 +74,8 @@ public class OrderController {
      * @param orderEntity order metadata
      * @return placed order
      */
+    @Operation(summary = "Create an Order")
+    @ApiResponse(responseCode = "201", description = "Order created successfully")
     @PostMapping("/orders")
     public ResponseEntity<OrderEntity> createOrder(@Valid @RequestBody OrderEntity orderEntity){
 

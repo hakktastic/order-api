@@ -39,8 +39,8 @@ public class ProductController {
     }
 
 
-    @Operation(summary = "read all products")
-    @ApiResponse(responseCode = "200", description = "product found in repository")
+    @Operation(summary = "Get all Products")
+    @ApiResponse(responseCode = "200", description = "Product(s) returned successfully")
     @GetMapping(value = "/products")
     public ResponseEntity<List<ProductEntity>> readProducts() {
 
@@ -52,8 +52,8 @@ public class ProductController {
     }
 
 
-    @Operation(summary = "read product with provided ID")
-    @ApiResponse(responseCode = "200", description = "product found in repository")
+    @Operation(summary = "Get Product by ID")
+    @ApiResponse(responseCode = "200", description = "Product returned successfully")
     @GetMapping(value = "/products/{id}")
     public ResponseEntity<ProductEntity> readProduct(@Valid @PathVariable int id) {
 

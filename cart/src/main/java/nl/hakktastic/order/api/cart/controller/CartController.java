@@ -1,5 +1,7 @@
 package nl.hakktastic.order.api.cart.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import nl.hakktastic.order.api.cart.entity.CartEntity;
@@ -30,6 +32,8 @@ public class CartController {
     }
 
 
+    @Operation(summary = "Create a cart")
+    @ApiResponse(responseCode = "201", description = "Cart created successfully")
     @PostMapping("/carts")
     public ResponseEntity<CartEntity> createCart(@Valid @RequestBody CartEntity cartEntity){
 
@@ -38,6 +42,8 @@ public class CartController {
                 HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Update cart")
+    @ApiResponse(responseCode = "200", description = "Cart updated successfully")
     @PutMapping("/carts/{cartId}/product/{productId}/quantity/{quantity}")
     public ResponseEntity<CartEntity> createCartItem(@Valid @PathVariable int cartId,  @Valid @PathVariable int productId, @Valid @PathVariable int quantity){
 
@@ -46,6 +52,8 @@ public class CartController {
                 HttpStatus.OK);
     }
 
+    @Operation(summary = "Get cart with provided ID")
+    @ApiResponse(responseCode = "200", description = "Cart returned successfully")
     @GetMapping("/carts/{cartId}")
     public ResponseEntity<CartEntity> readCart(@Valid @PathVariable int cartId){
 
