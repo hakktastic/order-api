@@ -5,6 +5,7 @@ import nl.hakktastic.order.api.report.dto.OrderItemDTO;
 import nl.hakktastic.order.api.report.dto.ProductDTO;
 import nl.hakktastic.order.api.report.exception.OrderNotFoundException;
 import nl.hakktastic.order.api.report.exception.ProductNotFoundException;
+import nl.hakktastic.order.api.report.exception.ReportNotFoundException;
 import nl.hakktastic.order.api.report.openfeign.OrderServiceFeignClient;
 import nl.hakktastic.order.api.report.openfeign.ProductServiceFeignClient;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,12 +50,14 @@ public class ReportService {
      */
     public Optional<BigDecimal> getDailySalesAmount(LocalDate startDate, LocalDate endDate){
 
+        log.debug("getDailySalesAmount - started startDate={} endDate={}",startDate, endDate);
+
         var optionalOrderList = orderServiceFeignClient.getAllOrders();
 
         if(optionalOrderList.isEmpty()){
 
-            log.info("getDailySalesAmount - unable to retrieve orders from order-service");
-            throw new OrderNotFoundException("unable to retrieve orders from order-service");
+            log.info("getDailySalesAmount - no orders found");
+            throw new OrderNotFoundException("getDailySalesAmount - no orders found");
         }
 
         var orderList = optionalOrderList.get();
@@ -73,7 +77,7 @@ public class ReportService {
 
                     if(optionalProductDTO.isEmpty()){
                         log.info("getDailySalesAmount - unable to retrieve product={} from order-service", orderItemDTO.getProductId());
-                        throw new ProductNotFoundException("unable to retrieve product="+orderItemDTO.getProductId()+" from product-service");
+                        throw new ProductNotFoundException("getDailySalesAmount - unable to retrieve product="+orderItemDTO.getProductId()+" from product-service");
                     }
 
                     var productPrice = optionalProductDTO.get().getPrice();
@@ -82,7 +86,7 @@ public class ReportService {
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        log.debug("getDailySalesAmount - amount={}", dailySalesAmount.toString());
+        log.debug("getDailySalesAmount - finished amount={}", dailySalesAmount.toString());
 
         return Optional.of(dailySalesAmount);
     }
@@ -94,16 +98,18 @@ public class ReportService {
      */
     public Optional<List<ProductDTO>> getTopFiveSellingProductsOfTheDay(){
 
+        log.debug("getTopFiveSellingProductsOfTheDay - started");
+
         var optionalOrderList = orderServiceFeignClient.getAllOrders();
 
         if(optionalOrderList.isEmpty()){
 
-            log.info("getTopFiveSellingProductsOfTheDay - unable to retrieve orders from order-service");
-            throw new OrderNotFoundException("unable to retrieve orders from order-service");
+            log.info("getTopFiveSellingProductsOfTheDay - no orders found");
+            throw new OrderNotFoundException("getTopFiveSellingProductsOfTheDay - no orders found");
         }
 
         var orderList = optionalOrderList.get();
-        log.debug("getDailySalesAmount - retrieved #{} orders", orderList.size());
+        log.debug("getTopFiveSellingProductsOfTheDay - retrieved #{} orders", orderList.size());
 
         var today = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0));
 
@@ -113,34 +119,77 @@ public class ReportService {
                 .filter(orderDTO -> orderDTO.getOrderDateTime().isAfter(today))
                 .flatMap(orderDTO -> orderDTO.getOrderItemList().stream())
                 .collect(Collectors.groupingBy(OrderItemDTO::getProductId, Collectors.counting()))
-                .keySet()
-                    .stream()
-                    .sorted((p1,p2) -> Integer.compare(p2, p1))
-                    .limit(5)
+                .entrySet()
+                .stream()
+                .sorted((p1,p2) -> Long.compare(p2.getValue(), p1.getValue()))
+                .limit(5)
                 .toList();
 
         var topFiveSellingProductOfTheDay = new ArrayList<ProductDTO>();
 
-        log.info("top 5 products of the day:");
-        topFiveProductIdList.forEach(productId -> {
+        log.info("getTopFiveSellingProductsOfTheDay - top 5 products of the day:");
+        topFiveProductIdList.forEach(product -> {
 
-            log.info("productId={}",productId);
-            var optionalProductDTO = productServiceFeignClient.getProductById(productId);
+            log.info("getTopFiveSellingProductsOfTheDay - product={} quantity={}",product.getKey(), product.getValue());
+            var optionalProductDTO = productServiceFeignClient.getProductById(product.getKey());
 
             if(optionalProductDTO.isPresent()){
 
                 var productDTO = optionalProductDTO.get();
-                log.debug("productDTO of productId={} productDTO={}",productId, productDTO);
+                log.debug("getTopFiveSellingProductsOfTheDay - productDTO={}", productDTO);
                 topFiveSellingProductOfTheDay.add(productDTO);
             }
         });
 
+        log.debug("getTopFiveSellingProductsOfTheDay - finished");
+
         return Optional.of(topFiveSellingProductOfTheDay);
     }
 
-    public Optional<ProductDTO> getLeastSellingProductOfTheMonth() {
+    /**
+     * Get least selling product of the month.
+     *
+     * @param month month to be reported
+     * @return a {@link ProductDTO} of least selling product of the month
+     */
+    public Optional<ProductDTO> getLeastSellingProductOfTheMonth(int month) {
 
-        // TODO implementation
-        return Optional.empty();
+        log.debug("getLeastSellingProductOfTheMonth - started month={}", month);
+
+        var optionalOrderList = orderServiceFeignClient.getAllOrders();
+
+        if(optionalOrderList.isEmpty()){
+
+            log.info("getLeastSellingProductOfTheMonth - no orders found to report for month={}", month);
+            throw new OrderNotFoundException("getLeastSellingProductOfTheMonth - no orders found to report for month=" + month);
+        }
+
+        var orderList = optionalOrderList.get();
+        log.debug("getLeastSellingProductOfTheMonth - retrieved #{} orders", orderList.size());
+
+        var leastSellingProductIdOfTheMonthList = orderList
+                .stream()
+                //.peek(orderDTO -> log.debug("order={} month={} is eligible={} for reporting", orderDTO.getId(), month, (orderDTO.getOrderDateTime().getYear() == Year.now().getValue()) && (orderDTO.getOrderDateTime().getMonth().getValue() == month)))
+                .filter(orderDTO -> (orderDTO.getOrderDateTime().getYear() == Year.now().getValue()) && (orderDTO.getOrderDateTime().getMonth().getValue() == month))
+                .flatMap(orderDTO -> orderDTO.getOrderItemList().stream())
+                .collect(Collectors.groupingBy(OrderItemDTO::getProductId, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted((p1,p2) -> Long.compare(p1.getValue(), p2.getValue()))
+                .limit(1)
+                .toList();
+
+        log.debug("getLeastSellingProductOfTheMonth - least selling product of the month:");
+
+        if(leastSellingProductIdOfTheMonthList.isEmpty()){
+            log.info("getLeastSellingProductOfTheMonth - no reporting data found for provided month={}", month);
+            throw new ReportNotFoundException("getLeastSellingProductOfTheMonth - no reporting data found for provided month=" + month);
+        }
+
+        var product = leastSellingProductIdOfTheMonthList.get(0);
+        log.info("getLeastSellingProductOfTheMonth - product={} quantity={}", product.getKey(), product.getValue());
+
+        log.debug("getLeastSellingProductOfTheMonth - finished");
+        return productServiceFeignClient.getProductById(product.getKey());
     }
 }
