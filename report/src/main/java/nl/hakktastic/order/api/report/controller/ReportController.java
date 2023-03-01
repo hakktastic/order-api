@@ -42,6 +42,8 @@ public class ReportController {
     @GetMapping("/reports/daily/sales/start/{startDate}/end/{endDate}")
     public ResponseEntity<BigDecimal> getDailySalesAmount(@Valid @PathVariable LocalDate startDate, @Valid @PathVariable LocalDate endDate){
 
+        log.debug("getDailySalesAmount - started startDate={} endDate={}",startDate,endDate);
+
         return new ResponseEntity<>(service.getDailySalesAmount(startDate, endDate)
                 .orElseThrow(() -> new UnexpectedReportException("unexpected error occurred while calculating daily sales amount")),
                 HttpStatus.OK);
@@ -55,6 +57,8 @@ public class ReportController {
     @GetMapping("/reports/daily/sales/top-5-products")
     public ResponseEntity<List<ProductDTO>> getTopFiveSellingProductsOfTheDay(){
 
+        log.debug("getTopFiveSellingProductsOfTheDay - started");
+
         return new ResponseEntity<>(service.getTopFiveSellingProductsOfTheDay()
                 .orElseThrow(() -> new UnexpectedReportException("unexpected error occurred while calculating top 5 selling products of the day")),
                 HttpStatus.OK);
@@ -65,10 +69,12 @@ public class ReportController {
      *
      * @return a @{@link ProductDTO} of the least selling product of the month
      */
-    @GetMapping("/reports/monthly/sales/least-selling-product")
-    public ResponseEntity<ProductDTO> getLeastSellingProductOfTheMonth(){
+    @GetMapping("/reports/monthly/sales/least-selling-product/{month}")
+    public ResponseEntity<ProductDTO> getLeastSellingProductOfTheMonth(@Valid @PathVariable int month){
 
-        return new ResponseEntity<>(service.getLeastSellingProductOfTheMonth()
+        log.debug("getLeastSellingProductOfTheMonth - started month={}", month);
+
+        return new ResponseEntity<>(service.getLeastSellingProductOfTheMonth(month)
                 .orElseThrow(() -> new UnexpectedReportException("unexpected error occurred while calculating the least selling product of the month")),
                 HttpStatus.OK);
     }
