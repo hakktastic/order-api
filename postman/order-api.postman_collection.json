@@ -1,0 +1,449 @@
+{
+	"info": {
+		"_postman_id": "506ce306-4819-4036-923a-6058916b5d2c",
+		"name": "order-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21175580"
+	},
+	"item": [
+		{
+			"name": "v3 api-docs",
+			"item": [
+				{
+					"name": "product-service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-product-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-product-service}}",
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cart-service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-cart-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-cart-service}}",
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order-service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-order-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-order-service}}",
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "report-service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-report-service}}/v3/api-docs",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-report-service}}",
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product-service",
+			"item": [
+				{
+					"name": "given product(s) exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-product-service}}/api/products",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-product-service}}",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "given existing product ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.productId).to.eql(1);",
+									"    pm.expect(jsonData.name).to.eql(\"shirt\");",
+									"    pm.expect(jsonData.price).to.eql(34.25);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-product-service}}/api/products/1",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-product-service}}",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "given non-existing productID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-product-service}}/api/products/100",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-product-service}}",
+							"path": [
+								"api",
+								"products",
+								"100"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart-service",
+			"item": [
+				{
+					"name": "given valid cart entity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"cartItemList\":\n    [\n        {\n            \"productId\": 1,\n            \"quantity\": 2,\n            \"cart\": 1\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 2,\n            \"cart\": 1\n        }\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host-url}}:{{host-port-cart-service}}/api/carts",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-cart-service}}",
+							"path": [
+								"api",
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "given existing cart ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-cart-service}}/api/carts/1",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-cart-service}}",
+							"path": [
+								"api",
+								"carts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "given valid item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-cart-service}}/api/carts/1/product/3/quantity/10",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-cart-service}}",
+							"path": [
+								"api",
+								"carts",
+								"1",
+								"product",
+								"3",
+								"quantity",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order-service",
+			"item": [
+				{
+					"name": "given valid order entity",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerName\":\"mockCustomer\",\n    \"mobileNr\":\"1234567890\",\n    \"orderDateTime\":\"2023-02-27T23:46:08.816204608\",\n    \"orderItemList\":\n    [\n        {\n            \"productId\": 2,\n            \"quantity\": 2\n        },\n        {\n            \"productId\": 4,\n            \"quantity\": 2\n        }\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host-url}}:{{host-port-order-service}}/api/orders",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-order-service}}",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "given existing order ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-order-service}}/api/orders/11",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-order-service}}",
+							"path": [
+								"api",
+								"orders",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "given existing order(s)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-order-service}}/api/orders",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-order-service}}",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "report-service",
+			"item": [
+				{
+					"name": "daily top 5 sold products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-report-service}}/api/reports/daily/sales/top-5-products",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-report-service}}",
+							"path": [
+								"api",
+								"reports",
+								"daily",
+								"sales",
+								"top-5-products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "daily sales amount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-report-service}}/api/reports/daily/sales/start/2023-02-01/end/2023-03-02",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-report-service}}",
+							"path": [
+								"api",
+								"reports",
+								"daily",
+								"sales",
+								"start",
+								"2023-02-01",
+								"end",
+								"2023-03-02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "least selling product of the month",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-url}}:{{host-port-report-service}}/api/reports/monthly/sales/least-selling-product/3",
+							"host": [
+								"{{host-url}}"
+							],
+							"port": "{{host-port-report-service}}",
+							"path": [
+								"api",
+								"reports",
+								"monthly",
+								"sales",
+								"least-selling-product",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
